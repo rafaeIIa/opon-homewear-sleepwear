@@ -5,27 +5,34 @@ import { type CartItem, addCartItem, cartItemKey, cartTotal, checkoutUrl, format
 import { ProductSizes } from "@/components/product-sizes";
 import { Button } from "@/components/ui/button";
 import type { Size } from "@/lib/sizes";
-import hero from "@/assets/hero.jpg";
-import longo from "@/assets/longo.jpg";
-import curto from "@/assets/curto.jpg";
-import coracoes from "@/assets/coracoes.jpg";
+import longoVinho from "@/assets/longo-vinho.jpg";
+import longoRosa from "@/assets/longo-rosa.jpg";
+import longoTurquesa from "@/assets/longo-turquesa.jpg";
+import longoLuas from "@/assets/longo-luas.jpg";
+import longoAzulBebe from "@/assets/longo-azul-bebe.jpg";
+import longoMarinho from "@/assets/longo-marinho.jpg";
+import plusCoracoesColoridos from "@/assets/plus-coracoes-coloridos.jpg";
+import plusCoracoesRosas from "@/assets/plus-coracoes-rosas.jpg";
+import curtoEstrelinhas from "@/assets/curto-estrelinhas.jpg";
+import curtoXadrez from "@/assets/curto-xadrez.jpg";
+import curtoPreto from "@/assets/curto-preto.jpg";
 
 const IG = "https://www.instagram.com/useopon/";
 const WA_GENERAL =
   "https://wa.me/5521984113654?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20OPON%20e%20gostaria%20de%20fazer%20um%20pedido";
 
 const products = [
-  { name: "Pijama Americano Longo Vinho", old: "129,90", price: "119,90", img: longo },
-  { name: "Pijama Americano Longo Rosa-bebê", old: "129,90", price: "119,90", img: longo },
-  { name: "Pijama Americano Longo Turquesa", old: "129,90", price: "119,90", img: longo },
-  { name: "Pijama Americano Longo Estampa de Luas e Estrelas", old: "129,90", price: "119,90", img: longo },
-  { name: "Pijama Americano Longo Azul-bebê", old: "129,90", price: "119,90", img: longo },
-  { name: "Pijama Americano Longo Azul-marinho", old: "129,90", price: "119,90", img: longo },
-  { name: "Pijama Americano Curto Plus Size Estampa de Corações Coloridos", old: "119,90", price: "109,90", img: coracoes },
-  { name: "Pijama Americano Curto Plus Size Estampa de Corações Rosas", old: "119,90", price: "109,90", img: coracoes },
-  { name: "Pijama Americano Curto Estampa de Estrelinhas Douradas", old: "109,90", price: "99,90", img: curto },
-  { name: "Pijama Americano Curto Xadrez Azul", old: "109,90", price: "99,90", img: curto },
-  { name: "Pijama Americano Curto Preto", old: "109,90", price: "99,90", img: curto },
+  { name: "Pijama Americano Longo Vinho", old: "129,90", price: "119,90", img: longoVinho },
+  { name: "Pijama Americano Longo Rosa-bebê", old: "129,90", price: "119,90", img: longoRosa },
+  { name: "Pijama Americano Longo Turquesa", old: "129,90", price: "119,90", img: longoTurquesa },
+  { name: "Pijama Americano Longo Estampa de Luas e Estrelas", old: "129,90", price: "119,90", img: longoLuas },
+  { name: "Pijama Americano Longo Azul-bebê", old: "129,90", price: "119,90", img: longoAzulBebe },
+  { name: "Pijama Americano Longo Azul-marinho", old: "129,90", price: "119,90", img: longoMarinho },
+  { name: "Pijama Americano Curto Plus Size Estampa de Corações Coloridos", old: "119,90", price: "109,90", img: plusCoracoesColoridos },
+  { name: "Pijama Americano Curto Plus Size Estampa de Corações Rosas", old: "119,90", price: "109,90", img: plusCoracoesRosas },
+  { name: "Pijama Americano Curto Estampa de Estrelinhas Douradas", old: "109,90", price: "99,90", img: curtoEstrelinhas },
+  { name: "Pijama Americano Curto Xadrez Azul", old: "109,90", price: "99,90", img: curtoXadrez },
+  { name: "Pijama Americano Curto Preto", old: "109,90", price: "99,90", img: curtoPreto },
 ];
 
 export const Route = createFileRoute("/")({
@@ -98,24 +105,19 @@ function Index() {
         )}
       </header>
 
-      <section id="inicio" className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
-        <div className="order-2 md:order-1">
-          <p className="mb-6 text-xs tracking-[0.35em] uppercase text-primary">Homewear & Sleepwear</p>
-          <h1 className="font-display text-5xl leading-[1.05] md:text-7xl">
-            O conforto de casa, <em className="text-primary">vestido com elegância.</em>
-          </h1>
-          <p className="mt-6 max-w-md text-lg font-light text-muted-foreground">
-            Pijamas pensados para os seus momentos mais seus — macios, bonitos e feitos para desacelerar.
-          </p>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <a href="#colecao" className={btnPrimary}>Explorar Coleção</a>
-            <a href={WA_GENERAL} target="_blank" rel="noopener noreferrer" className={btnOutline}>
-              <MessageCircle className="h-4 w-4" /> Falar no WhatsApp
-            </a>
-          </div>
-        </div>
-        <div className="order-1 md:order-2">
-          <img src={hero} alt="Mulher a usar pijama OPON vinho" width={1280} height={1600} className="aspect-[4/5] w-full object-cover" />
+      <section id="inicio" className="mx-auto max-w-4xl px-6 py-24 text-center md:py-36">
+        <p className="mb-6 text-xs tracking-[0.35em] uppercase text-primary">Homewear & Sleepwear</p>
+        <h1 className="font-display text-5xl leading-[1.05] md:text-7xl">
+          O conforto de casa, <em className="text-primary">vestido com elegância.</em>
+        </h1>
+        <p className="mx-auto mt-6 max-w-md text-lg font-light text-muted-foreground">
+          Pijamas pensados para os seus momentos mais seus — macios, bonitos e feitos para desacelerar.
+        </p>
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="#colecao" className={btnPrimary}>Explorar Coleção</a>
+          <a href={WA_GENERAL} target="_blank" rel="noopener noreferrer" className={btnOutline}>
+            <MessageCircle className="h-4 w-4" /> Falar no WhatsApp
+          </a>
         </div>
       </section>
 
@@ -140,7 +142,7 @@ function Index() {
           {products.map((p) => (
             <article key={p.name} className="group flex flex-col">
               <div className="overflow-hidden bg-card">
-                <img src={p.img} alt={p.name} loading="lazy" width={800} height={1000} className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src={p.img} alt={p.name} loading="lazy" width={800} height={1200} className="aspect-[2/3] w-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
               </div>
               <h3 className="mt-5 flex-1 font-display text-xl leading-snug">{p.name}</h3>
               <div className="mt-3 flex items-baseline gap-3">
@@ -212,7 +214,7 @@ function Index() {
               ) : (
                 cart.map((i) => (
                   <div key={cartItemKey(i)} className="flex gap-4 border-b py-4">
-                    <img src={products.find((p) => p.name === i.name)?.img} alt="" className="h-20 w-16 object-cover" />
+                    <img src={products.find((p) => p.name === i.name)?.img} alt="" className="h-24 w-16 object-cover object-top" />
                     <div className="flex flex-1 flex-col">
                       <p className="font-display text-lg leading-snug">{i.name}</p>
                       <p className="text-sm text-primary">Tamanho: {i.size}</p>
