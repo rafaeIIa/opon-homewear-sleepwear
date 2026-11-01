@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { addCartItem, buildCheckoutMessage, cartTotal, checkoutUrl } from "@/lib/cart";
+import { type CartItem, addCartItem, buildCheckoutMessage, cartTotal, checkoutUrl } from "@/lib/cart";
 
 describe("cart", () => {
   const items = [
     { name: "Pijama Americano Longo Vinho", price: "119,90", qty: 1 },
     { name: "Pijama Americano Curto Preto", price: "99,90", qty: 1 },
-  ] as const;
+  ] satisfies [CartItem, CartItem];
   it("sums total", () => expect(cartTotal(items)).toBeCloseTo(219.8));
   it("builds message", () => {
     const m = buildCheckoutMessage(items);
