@@ -10,8 +10,6 @@ import coracoes from "@/assets/coracoes.jpg";
 const IG = "https://www.instagram.com/useopon/";
 const WA_GENERAL =
   "https://wa.me/5521984113654?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20OPON%20e%20gostaria%20de%20fazer%20um%20pedido";
-const waProduct = (name: string) =>
-  `https://wa.me/5521984113654?text=${encodeURIComponent(`Olá! Gostaria de comprar o Conjunto ${name}`)}`;
 
 const products = [
   { name: "Pijama Americano Longo Vinho", old: "129,90", price: "119,90", img: longo },
@@ -46,6 +44,13 @@ const btnOutline =
 
 function Index() {
   const [open, setOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const add = (name: string, price: string) =>
+    setCart((c) => (c.some((i) => i.name === name) ? c.map((i) => (i.name === name ? { ...i, qty: i.qty + 1 } : i)) : [...c, { name, price, qty: 1 }]));
+  const change = (name: string, d: number) =>
+    setCart((c) => c.map((i) => (i.name === name ? { ...i, qty: i.qty + d } : i)).filter((i) => i.qty > 0));
   const links = [
     { href: "#inicio", label: "Início" },
     { href: "#colecao", label: "Coleção" },
@@ -63,10 +68,20 @@ function Index() {
             <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram @useopon" className="inline-flex items-center gap-2 border border-primary px-4 py-2 text-sm text-primary transition-colors hover:bg-primary hover:text-primary-foreground">
               <Instagram className="h-4 w-4" /> @useopon
             </a>
+            <button onClick={() => setCartOpen(true)} aria-label="Abrir carrinho" className="relative p-2 text-foreground transition-colors hover:text-primary">
+              <ShoppingBag className="h-5 w-5" />
+              {count > 0 && <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">{count}</span>}
+            </button>
           </nav>
-          <button className="md:hidden" aria-label="Menu" onClick={() => setOpen(!open)}>
-            {open ? <X /> : <Menu />}
-          </button>
+          <div className="flex items-center gap-3 md:hidden">
+            <button onClick={() => setCartOpen(true)} aria-label="Abrir carrinho" className="relative p-2 text-foreground transition-colors hover:text-primary">
+              <ShoppingBag className="h-5 w-5" />
+              {count > 0 && <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">{count}</span>}
+            </button>
+            <button aria-label="Menu" onClick={() => setOpen(!open)}>
+              {open ? <X /> : <Menu />}
+            </button>
+          </div>
         </div>
         {open && (
           <nav className="flex flex-col gap-4 border-t px-6 py-6 md:hidden">
@@ -127,9 +142,9 @@ function Index() {
                 <span className="text-sm text-muted-foreground line-through">R$ {p.old}</span>
                 <span className="text-xl font-semibold">R$ {p.price}</span>
               </div>
-              <a href={waProduct(p.name)} target="_blank" rel="noopener noreferrer" className={`${btnOutline} mt-5 w-full`}>
-                <MessageCircle className="h-4 w-4" /> Comprar no WhatsApp
-              </a>
+              <button onClick={() => { add(p.name, p.price); setCartOpen(true); }} className={`${btnOutline} mt-5 w-full`}>
+                <ShoppingBag className="h-4 w-4" /> Adicionar ao Carrinho
+              </button>
             </article>
           ))}
         </div>
@@ -179,6 +194,52 @@ function Index() {
         </div>
         <p className="mt-10 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} OPON. Todos os direitos reservados.</p>
       </footer>
+
+      {cartOpen && (
+        <div className="fixed inset-0 z-[60]">
+          <div className="absolute inset-0 bg-foreground/40 animate-in fade-in" onClick={() => setCartOpen(false)} />
+          <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-card shadow-2xl animate-in slide-in-from-right">
+            <div className="flex items-center justify-between border-b px-6 py-5">
+              <h2 className="font-display text-2xl">O seu carrinho ({count})</h2>
+              <button aria-label="Fechar" onClick={() => setCartOpen(false)} className="hover:text-primary"><X /></button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              {cart.length === 0 ? (
+                <p className="py-16 text-center text-muted-foreground">O seu carrinho está vazio.</p>
+              ) : (
+                cart.map((i) => (
+                  <div key={i.name} className="flex gap-4 border-b py-4">
+                    <img src={products.find((p) => p.name === i.name)?.img} alt="" className="h-20 w-16 object-cover" />
+                    <div className="flex flex-1 flex-col">
+                      <p className="font-display text-lg leading-snug">{i.name}</p>
+                      <p className="text-sm text-muted-foreground">{formatBRL(toNumber(i.price))}</p>
+                      <div className="mt-2 flex items-center gap-3">
+                        <button aria-label="Diminuir" onClick={() => change(i.name, -1)} className="border p-1 hover:border-primary hover:text-primary"><Minus className="h-3 w-3" /></button>
+                        <span className="w-5 text-center text-sm">{i.qty}</span>
+                        <button aria-label="Aumentar" onClick={() => change(i.name, 1)} className="border p-1 hover:border-primary hover:text-primary"><Plus className="h-3 w-3" /></button>
+                        <button aria-label="Remover" onClick={() => change(i.name, -i.qty)} className="ml-auto text-muted-foreground hover:text-primary"><Trash2 className="h-4 w-4" /></button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+            <div className="border-t px-6 py-5">
+              <div className="mb-4 flex items-baseline justify-between">
+                <span className="text-sm uppercase tracking-wider">Total</span>
+                <span className="text-2xl font-semibold">{formatBRL(cartTotal(cart))}</span>
+              </div>
+              {cart.length > 0 ? (
+                <a href={checkoutUrl(cart)} target="_blank" rel="noopener noreferrer" className={`${btnPrimary} w-full`}>
+                  <MessageCircle className="h-4 w-4" /> Finalizar Pedido no WhatsApp
+                </a>
+              ) : (
+                <button disabled className={`${btnPrimary} w-full opacity-50`}>Finalizar Pedido no WhatsApp</button>
+              )}
+            </div>
+          </aside>
+        </div>
+      )}
     </div>
   );
 }
