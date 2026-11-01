@@ -16,6 +16,7 @@ import plusCoracoesRosas from "@/assets/plus-coracoes-rosas.jpg";
 import curtoEstrelinhas from "@/assets/curto-estrelinhas.jpg";
 import curtoXadrez from "@/assets/curto-xadrez.jpg";
 import curtoPreto from "@/assets/curto-preto.jpg";
+import logo from "@/assets/opon-logo.png";
 
 const IG = "https://www.instagram.com/useopon/";
 const WA_GENERAL =
@@ -72,7 +73,7 @@ function Index() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-50 border-b bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <a href="#inicio" className="font-display text-3xl font-semibold tracking-[0.3em] text-primary">OPON</a>
+          <a href="#inicio" aria-label="OPON — início"><img src={logo} alt="OPON" className="h-9 w-auto" /></a>
           <nav className="hidden items-center gap-10 md:flex">
             {links.map((l) => (
               <a key={l.href} href={l.href} className="text-sm tracking-wide text-foreground/80 transition-colors hover:text-primary">{l.label}</a>
@@ -186,7 +187,7 @@ function Index() {
 
       <footer className="border-t py-14">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 md:flex-row md:justify-between">
-          <span className="font-display text-2xl font-semibold tracking-[0.3em] text-primary">OPON</span>
+          <img src={logo} alt="OPON" className="h-7 w-auto" />
           <nav className="flex gap-8 text-sm">
             {links.map((l) => (
               <a key={l.href} href={l.href} className="hover:text-primary">{l.label}</a>
