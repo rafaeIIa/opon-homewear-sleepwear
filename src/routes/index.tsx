@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Instagram, MessageCircle, Menu, X, Ruler, Sparkles, Send } from "lucide-react";
+import { Instagram, MessageCircle, Menu, X, Ruler, Sparkles, Send, ShoppingBag, Plus, Minus, Trash2 } from "lucide-react";
+import { type CartItem, cartTotal, checkoutUrl, formatBRL, toNumber } from "@/lib/cart";
 import hero from "@/assets/hero.jpg";
 import longo from "@/assets/longo.jpg";
 import curto from "@/assets/curto.jpg";
