@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Instagram, MessageCircle, Menu, X, Ruler, Sparkles, Send, ShoppingBag, Plus, Minus, Trash2 } from "lucide-react";
-import { type CartItem, cartTotal, checkoutUrl, formatBRL, toNumber } from "@/lib/cart";
+import { type CartItem, addCartItem, cartItemKey, cartTotal, checkoutUrl, formatBRL, toNumber } from "@/lib/cart";
+import { ProductSizes } from "@/components/product-sizes";
+import { Button } from "@/components/ui/button";
+import type { Size } from "@/lib/sizes";
 import hero from "@/assets/hero.jpg";
 import longo from "@/assets/longo.jpg";
 import curto from "@/assets/curto.jpg";
@@ -32,6 +35,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Conheça a coleção OPON de pijamas americanos longos e curtos. Peça pelo WhatsApp." },
       { property: "og:title", content: "OPON — Pijamas e Homewear" },
       { property: "og:description", content: "Aconchego, estilo e bem-estar para os seus momentos em casa." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
@@ -47,10 +52,10 @@ function Index() {
   const [cartOpen, setCartOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   const count = cart.reduce((s, i) => s + i.qty, 0);
-  const add = (name: string, price: string) =>
-    setCart((c) => (c.some((i) => i.name === name) ? c.map((i) => (i.name === name ? { ...i, qty: i.qty + 1 } : i)) : [...c, { name, price, qty: 1 }]));
-  const change = (name: string, d: number) =>
-    setCart((c) => c.map((i) => (i.name === name ? { ...i, qty: i.qty + d } : i)).filter((i) => i.qty > 0));
+  const add = (name: string, price: string, size: Size) =>
+    setCart((c) => addCartItem(c, { name, price, size, qty: 1 }));
+  const change = (key: string, d: number) =>
+    setCart((c) => c.map((i) => (cartItemKey(i) === key ? { ...i, qty: i.qty + d } : i)).filter((i) => i.qty > 0));
   const links = [
     { href: "#inicio", label: "Início" },
     { href: "#colecao", label: "Coleção" },
@@ -142,9 +147,7 @@ function Index() {
                 <span className="text-sm text-muted-foreground line-through">R$ {p.old}</span>
                 <span className="text-xl font-semibold">R$ {p.price}</span>
               </div>
-              <button onClick={() => { add(p.name, p.price); setCartOpen(true); }} className={`${btnOutline} mt-5 w-full`}>
-                <ShoppingBag className="h-4 w-4" /> Adicionar ao Carrinho
-              </button>
+              <ProductSizes name={p.name} onAdd={(size) => { add(p.name, p.price, size); setCartOpen(true); }} />
             </article>
           ))}
         </div>
@@ -208,16 +211,17 @@ function Index() {
                 <p className="py-16 text-center text-muted-foreground">O seu carrinho está vazio.</p>
               ) : (
                 cart.map((i) => (
-                  <div key={i.name} className="flex gap-4 border-b py-4">
+                  <div key={cartItemKey(i)} className="flex gap-4 border-b py-4">
                     <img src={products.find((p) => p.name === i.name)?.img} alt="" className="h-20 w-16 object-cover" />
                     <div className="flex flex-1 flex-col">
                       <p className="font-display text-lg leading-snug">{i.name}</p>
+                      <p className="text-sm text-primary">Tamanho: {i.size}</p>
                       <p className="text-sm text-muted-foreground">{formatBRL(toNumber(i.price))}</p>
                       <div className="mt-2 flex items-center gap-3">
-                        <button aria-label="Diminuir" onClick={() => change(i.name, -1)} className="border p-1 hover:border-primary hover:text-primary"><Minus className="h-3 w-3" /></button>
+                        <Button variant="outline" size="icon" aria-label="Diminuir" onClick={() => change(cartItemKey(i), -1)} className="h-8 w-8"><Minus /></Button>
                         <span className="w-5 text-center text-sm">{i.qty}</span>
-                        <button aria-label="Aumentar" onClick={() => change(i.name, 1)} className="border p-1 hover:border-primary hover:text-primary"><Plus className="h-3 w-3" /></button>
-                        <button aria-label="Remover" onClick={() => change(i.name, -i.qty)} className="ml-auto text-muted-foreground hover:text-primary"><Trash2 className="h-4 w-4" /></button>
+                        <Button variant="outline" size="icon" aria-label="Aumentar" onClick={() => change(cartItemKey(i), 1)} className="h-8 w-8"><Plus /></Button>
+                        <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => change(cartItemKey(i), -i.qty)} className="ml-auto text-muted-foreground"><Trash2 /></Button>
                       </div>
                     </div>
                   </div>
@@ -230,7 +234,7 @@ function Index() {
                 <span className="text-2xl font-semibold">{formatBRL(cartTotal(cart))}</span>
               </div>
               {cart.length > 0 ? (
-                <a href={checkoutUrl(cart)} target="_blank" rel="noopener noreferrer" className={`${btnPrimary} w-full`}>
+                <a href={checkoutUrl(cart)} target="_blank" rel="noopener noreferrer" className={`${btnPrimary} w-full px-3 text-center text-xs`}>
                   <MessageCircle className="h-4 w-4" /> Finalizar Pedido no WhatsApp
                 </a>
               ) : (
