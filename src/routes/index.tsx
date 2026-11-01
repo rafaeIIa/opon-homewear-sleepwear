@@ -67,7 +67,7 @@ function Index() {
   const links = [
     { href: "#inicio", label: "Início" },
     { href: "#colecao", label: "Coleção" },
-    { href: "#contacto", label: "Contacto" },
+    { href: "#contacto", label: "Contato" },
   ];
   return (
     <div className="min-h-screen">
@@ -128,7 +128,7 @@ function Index() {
           <h2 className="font-display text-4xl md:text-5xl">Feito para os momentos em casa</h2>
           <p className="mt-8 text-lg font-light leading-relaxed text-muted-foreground">
             A OPON nasceu do desejo de levar aconchego, estilo e bem-estar para o dia a dia. Cada peça é escolhida
-            para que se sinta bem desde o primeiro café da manhã até ao último capítulo antes de dormir — porque estar
+            para que se sinta bem desde o primeiro café da manhã até o último capítulo antes de dormir — porque estar
             em casa também merece elegância.
           </p>
         </div>
@@ -168,7 +168,7 @@ function Index() {
             {[
               { icon: Send, t: "Envie uma mensagem", d: "Escolha o seu pijama e fale connosco." },
               { icon: Ruler, t: "Escolha o tamanho", d: "Ajudamos a encontrar o ajuste ideal." },
-              { icon: Sparkles, t: "Personalize", d: "Combinamos todos os detalhes consigo." },
+              { icon: Sparkles, t: "Personalize", d: "Combinamos a entrega e outras preferências de forma personalizada com você." },
             ].map(({ icon: Icon, t, d }) => (
               <div key={t} className="border border-primary-foreground/25 p-8 text-center">
                 <Icon className="mx-auto h-6 w-6" />
